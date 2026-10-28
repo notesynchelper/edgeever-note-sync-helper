@@ -1,0 +1,26 @@
+{
+  "name": "edgeever-note-sync-helper",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "EdgeEver plugin that syncs cloud-space articles into notebooks using folder, title and content templates.",
+  "license": "MIT",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "smoke": "node scripts/smoke.mjs",
+    "check": "npm run typecheck && npm test && npm run build"
+  },
+  "dependencies": {
+    "mustache": "^4.2.0",
+    "yaml": "^2.8.1"
+  },
+  "devDependencies": {
+    "@types/mustache": "^4.2.6",
+    "@types/node": "^22.18.0",
+    "esbuild": "^0.25.9",
+    "typescript": "^5.9.2",
+    "vitest": "^3.2.4"
+  }
+}

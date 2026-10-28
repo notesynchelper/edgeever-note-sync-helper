@@ -1,0 +1,19 @@
+{
+  "name": "edgeever-note-sync-helper-e2e",
+  "version": "0.0.0",
+  "private": true,
+  "description": "EdgeEver 版「笔记同步助手」E2E：真实宿主 + 桩插件 + mock 文章服务",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "e2e": "node run-e2e.js",
+    "e2e:tutorial": "node run-e2e.js --mode=tutorial",
+    "e2e:fast": "node run-e2e.js --mode=fast",
+    "e2e:real": "node run-e2e.js --mode=real",
+    "reset": "bash scripts/reset-instance.sh"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.64.1"
+  }
+}

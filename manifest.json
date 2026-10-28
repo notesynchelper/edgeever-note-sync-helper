@@ -1,0 +1,122 @@
+{
+  "type": "plugin",
+  "id": "com.bijitongbu.note-sync-helper",
+  "name": "笔记同步助手",
+  "version": "1.0.0",
+  "apiVersion": "2",
+  "settingsUi": "host",
+  "description": "把云空间里的文章同步成 EdgeEver 笔记：按文件夹和模板归档，图片可保存到笔记中。",
+  "locales": {
+    "zh-CN": {
+      "description": "把云空间里的文章同步成 EdgeEver 笔记：按文件夹和模板归档，图片可保存到笔记中。"
+    },
+    "en-US": {
+      "name": "Note Sync Helper",
+      "description": "Sync your cloud-space articles into EdgeEver notes with folder, title and content templates."
+    }
+  },
+  "author": "notesynchelper",
+  "entry": "./main.js",
+  "platforms": ["web", "desktop"],
+  "permissions": [
+    "notes:read",
+    "notes:write",
+    "metadata:read",
+    "metadata:write",
+    "resources:write",
+    "network",
+    "network:public",
+    "storage",
+    "schedules",
+    "ui:commands",
+    "ui:notices"
+  ],
+  "networkHosts": [
+    "relay-1.bijitongbu.site",
+    "relay-2.bijitongbu.site",
+    "relay-4.bijitongbu.site",
+    "graph.bijitongbu.site",
+    "obsidian.notebooksyncer.com",
+    "pic.clipfx.app",
+    "media.clipfx.app",
+    "media30d.clipfx.app",
+    "pbs.twimg.com",
+    "*.qpic.cn",
+    "findermp.video.qq.com"
+  ],
+  "settings": {
+    "fields": [
+      {
+        "key": "api-key",
+        "type": "secret",
+        "label": "密钥",
+        "description": "发送「密钥」给笔记同步助手公众号（服务号）获取密钥。",
+        "placeholder": "输入您的密钥",
+        "required": true
+      },
+      {
+        "key": "folder-template",
+        "type": "text",
+        "label": "文章文件夹",
+        "description": "笔记保存到哪个笔记本，用 / 分隔多级。支持 {{{title}}}、{{{date}}}、{{{yearSaved}}}/{{{monthSaved}}}/{{{daySaved}}} 等变量。",
+        "default": "笔记同步助手/{{{date}}}"
+      },
+      {
+        "key": "folder-date-format",
+        "type": "text",
+        "label": "文章文件夹日期格式",
+        "description": "文件夹模板里日期变量的格式，例如 yyyy-MM-dd。",
+        "default": "yyyy-MM-dd"
+      },
+      {
+        "key": "title-template",
+        "type": "text",
+        "label": "文章文件名",
+        "description": "笔记标题的模板。支持 {{{title}}}、{{{author}}}、{{{siteName}}}、{{{date}}} 等变量。",
+        "default": "{{{title}}}"
+      },
+      {
+        "key": "front-matter-template",
+        "type": "text",
+        "label": "笔记属性模板",
+        "description": "渲染后写入笔记开头的属性区。支持 {{{author}}}、{{{siteName}}}、{{{originalUrl}}}、{{{dateSaved}}} 与标签变量。",
+        "default": "author: {{{author}}}\nsource: {{{siteName}}}\nurl: {{{originalUrl}}}\nsaved: {{{dateSaved}}}\ntags: [笔记同步助手{{#labels}}, {{{name}}}{{/labels}}]"
+      },
+      {
+        "key": "article-template",
+        "type": "text",
+        "label": "文章模板",
+        "description": "笔记正文的模板，{{{content}}} 代表文章内容。",
+        "default": "{{{content}}}"
+      },
+      {
+        "key": "image-mode",
+        "type": "select",
+        "label": "图片处理模式",
+        "description": "保存到 EdgeEver 会把图片存进笔记，离线也能看；保留远程链接则正文只记录图片地址。",
+        "default": "local",
+        "options": [
+          { "value": "local", "label": "保存到 EdgeEver" },
+          { "value": "remote", "label": "保留远程链接" }
+        ]
+      },
+      {
+        "key": "sync-on-start",
+        "type": "boolean",
+        "label": "启动时同步（本设备）",
+        "description": "打开 EdgeEver 时自动同步一次。此设置仅对当前设备生效。",
+        "default": false
+      },
+      {
+        "key": "frequency",
+        "type": "number",
+        "label": "频率（本设备）",
+        "description": "自动同步的间隔（分钟）。0 表示只手动同步。此设置仅对当前设备生效，且仅桌面端生效。",
+        "default": 0,
+        "min": 0,
+        "max": 10080,
+        "step": 1
+      }
+    ]
+  }
+}

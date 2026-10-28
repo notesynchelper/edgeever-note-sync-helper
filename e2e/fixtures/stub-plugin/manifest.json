@@ -1,0 +1,97 @@
+{
+  "type": "plugin",
+  "id": "com.bijitongbu.note-sync-helper",
+  "name": "笔记同步助手",
+  "version": "1.0.0",
+  "apiVersion": "2",
+  "settingsUi": "host",
+  "description": "把「笔记同步助手」整理好的文章同步到 EdgeEver。本包是 E2E 桩插件，不是发布产物。",
+  "author": "笔记同步助手",
+  "entry": "./main.js",
+  "platforms": ["web", "desktop"],
+  "permissions": [
+    "notes:read",
+    "notes:write",
+    "metadata:read",
+    "metadata:write",
+    "resources:read",
+    "resources:write",
+    "network",
+    "network:public",
+    "storage",
+    "ui:commands",
+    "ui:notices"
+  ],
+  "networkHosts": [
+    "relay-1.bijitongbu.site",
+    "relay-2.bijitongbu.site",
+    "graph.bijitongbu.site",
+    "obsidian.notebooksyncer.com"
+  ],
+  "settings": {
+    "fields": [
+      {
+        "key": "api-key",
+        "type": "secret",
+        "label": "密钥",
+        "required": true,
+        "placeholder": "粘贴你的密钥",
+        "description": "在「笔记同步助手」服务里复制的个人密钥，只保存在当前设备。"
+      },
+      {
+        "key": "folder-template",
+        "type": "text",
+        "label": "文章文件夹",
+        "default": "笔记同步助手/{{{date}}}",
+        "placeholder": "笔记同步助手/{{{date}}}"
+      },
+      {
+        "key": "folder-date-format",
+        "type": "text",
+        "label": "文章文件夹日期格式",
+        "default": "yyyy-MM-dd"
+      },
+      {
+        "key": "title-template",
+        "type": "text",
+        "label": "文章文件名",
+        "default": "{{{title}}}"
+      },
+      {
+        "key": "front-matter-template",
+        "type": "text",
+        "label": "笔记属性模板",
+        "default": "author: {{{author}}}\nsource: {{{siteName}}}\nurl: {{{originalUrl}}}\nsaved: {{{dateSaved}}}\ntags: [笔记同步助手{{#labels}}, {{{name}}}{{/labels}}]"
+      },
+      {
+        "key": "article-template",
+        "type": "text",
+        "label": "文章模板",
+        "default": "{{{content}}}"
+      },
+      {
+        "key": "image-mode",
+        "type": "select",
+        "label": "图片处理模式",
+        "default": "local",
+        "options": [
+          { "value": "local", "label": "保存到 EdgeEver" },
+          { "value": "remote", "label": "保留远程链接" }
+        ]
+      },
+      {
+        "key": "sync-on-start",
+        "type": "boolean",
+        "label": "启动时同步（本设备）",
+        "default": false
+      },
+      {
+        "key": "frequency",
+        "type": "number",
+        "label": "频率（本设备，分钟，0=手动；仅桌面端生效）",
+        "default": 0,
+        "min": 0
+      }
+    ]
+  }
+}
