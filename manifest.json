@@ -2,7 +2,7 @@
   "type": "plugin",
   "id": "com.bijitongbu.note-sync-helper",
   "name": "笔记同步助手",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "apiVersion": "2",
   "settingsUi": "host",
   "description": "把云空间里的文章同步成 EdgeEver 笔记：按文件夹和模板归档，图片可保存到笔记中。",
@@ -17,7 +17,10 @@
   },
   "author": "notesynchelper",
   "entry": "./main.js",
-  "platforms": ["web", "desktop"],
+  "platforms": [
+    "web",
+    "desktop"
+  ],
   "permissions": [
     "notes:read",
     "notes:write",
@@ -79,8 +82,8 @@
         "key": "front-matter-template",
         "type": "text",
         "label": "笔记属性模板",
-        "description": "渲染后写入笔记开头的属性区。支持 {{{author}}}、{{{siteName}}}、{{{originalUrl}}}、{{{dateSaved}}} 与标签变量。",
-        "default": "author: {{{author}}}\nsource: {{{siteName}}}\nurl: {{{originalUrl}}}\nsaved: {{{dateSaved}}}\ntags: [笔记同步助手{{#labels}}, {{{name}}}{{/labels}}]"
+        "description": "渲染后写入笔记开头的属性区，每一项用分号隔开。支持 {{{author}}}、{{{siteName}}}、{{{originalUrl}}}、{{{dateSaved}}} 与标签变量。",
+        "default": "author: {{{author}}}; source: {{{siteName}}}; url: {{{originalUrl}}}; saved: {{{dateSaved}}}; tags: [笔记同步助手{{#labels}}, {{{name}}}{{/labels}}]"
       },
       {
         "key": "article-template",
@@ -96,8 +99,14 @@
         "description": "保存到 EdgeEver 会把图片存进笔记，离线也能看；保留远程链接则正文只记录图片地址。",
         "default": "local",
         "options": [
-          { "value": "local", "label": "保存到 EdgeEver" },
-          { "value": "remote", "label": "保留远程链接" }
+          {
+            "value": "local",
+            "label": "保存到 EdgeEver"
+          },
+          {
+            "value": "remote",
+            "label": "保留远程链接"
+          }
         ]
       },
       {

@@ -15,13 +15,32 @@ export const SETTING_KEYS = {
 
 export type ImageMode = "local" | "remote";
 
+/**
+ * The host renders every text setting as a single-line input, which drops
+ * newlines, so the properties template is stored one property per `; `.
+ * `frontMatterLines` turns it back into YAML lines; multi-line values written
+ * by older builds still work unchanged.
+ */
 export const DEFAULT_FRONT_MATTER_TEMPLATE = [
   "author: {{{author}}}",
   "source: {{{siteName}}}",
   "url: {{{originalUrl}}}",
   "saved: {{{dateSaved}}}",
   "tags: [笔记同步助手{{#labels}}, {{{name}}}{{/labels}}]",
-].join("\n");
+].join("; ");
+
+/**
+ * Splits a properties template on newlines and on `; ` that starts a new
+ * `key:` entry, so a `;` inside a value (or inside a tag list) is kept.
+ */
+export function frontMatterLines(template: string): string {
+  return template
+    .split(/\r?\n/)
+    .flatMap((line) => line.split(/;\s*(?=[A-Za-z_\u4e00-\u9fff][\w\u4e00-\u9fff-]*\s*:)/))
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join("\n");
+}
 
 const DEFAULT_FOLDER_TEMPLATE = "笔记同步助手/{{{date}}}";
 const DEFAULT_FOLDER_DATE_FORMAT = "yyyy-MM-dd";

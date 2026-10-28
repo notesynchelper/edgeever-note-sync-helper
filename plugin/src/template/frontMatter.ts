@@ -2,6 +2,7 @@ import YAML from "yaml";
 import type { RemoteItem } from "../api/types";
 import { renderContent } from "./render";
 import type { TemplateWarning } from "./helpers";
+import { frontMatterLines } from "../settings";
 
 /**
  * Stable marker kept in the note's own properties block. It is what lets a
@@ -55,7 +56,7 @@ export function buildFrontMatter(
   datePattern = "yyyy-MM-dd",
   onWarning?: TemplateWarning,
 ): RenderedFrontMatter {
-  const rendered = renderContent(item, template, datePattern, onWarning);
+  const rendered = renderContent(item, frontMatterLines(template), datePattern, onWarning);
   const kept = rendered
     .split(/\r?\n/)
     .filter((line) => !ANCHOR_LINE.test(line))

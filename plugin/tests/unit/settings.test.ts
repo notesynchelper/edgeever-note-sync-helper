@@ -5,6 +5,7 @@ import {
   normalizeSettings,
   SETTING_KEYS,
   clampFrequency,
+  frontMatterLines,
 } from "../../src/settings";
 import { createFakeHost } from "../helpers/fakeHost";
 import { readSettings } from "../../src/settings";
@@ -41,5 +42,25 @@ describe("settings", () => {
     expect(clampFrequency(3.6)).toBe(4);
     expect(clampFrequency("nope")).toBe(0);
     expect(normalizeSettings({ [SETTING_KEYS.syncOnStart]: "yes" }).syncOnStart).toBe(false);
+  });
+});
+
+describe("frontMatterLines", () => {
+  test("splits a single-line template into one property per line", () => {
+    expect(frontMatterLines(DEFAULT_FRONT_MATTER_TEMPLATE)).toBe([
+      "author: {{{author}}}",
+      "source: {{{siteName}}}",
+      "url: {{{originalUrl}}}",
+      "saved: {{{dateSaved}}}",
+      "tags: [笔记同步助手{{#labels}}, {{{name}}}{{/labels}}]",
+    ].join("\n"));
+  });
+
+  test("keeps a semicolon that is part of a value", () => {
+    expect(frontMatterLines("note: a; b; 来源: x")).toBe("note: a; b\n来源: x");
+  });
+
+  test("leaves multi-line templates from older builds unchanged", () => {
+    expect(frontMatterLines("author: {{{author}}}\nurl: {{{originalUrl}}}")).toBe("author: {{{author}}}\nurl: {{{originalUrl}}}");
   });
 });

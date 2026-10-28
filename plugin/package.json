@@ -1,6 +1,6 @@
 {
   "name": "edgeever-note-sync-helper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "description": "EdgeEver plugin that syncs cloud-space articles into notebooks using folder, title and content templates.",
