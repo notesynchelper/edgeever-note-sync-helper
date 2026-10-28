@@ -202,11 +202,21 @@ const runMode = async ({ mode, config, options, staticServer, mock, packageKind 
       console.log('[e2e] routed official article endpoints to the local mock (--route-mock)');
     }
 
+    // Harness-only: the browser and the instance share one egress IP, and the
+    // host's own update checks for its bundled plugins can drain GitHub's
+    // anonymous 60/hour quota. A read-only token from the environment lifts
+    // that limit for api.github.com only; it never touches the plugin.
+    if (process.env.E2E_GITHUB_TOKEN) {
+      const token = process.env.E2E_GITHUB_TOKEN;
+      await context.route('https://api.github.com/**', (route) =>
+        route.continue({ headers: { ...route.request().headers(), authorization: `Bearer ${token}` } }));
+    }
+
     page = await context.newPage();
     diagnostics = attachDiagnostics(page);
     const shots = new Screenshots(config.shotsRoot, runName, page);
 
-    if (mode === 'fast' || usingRealKey) {
+    if (mode !== 'tutorial') {
       const manifestUrl = isGithubSource(installSource)
         ? `${installSource.replace(/\/$/, '')}/releases/download/v${config.pluginVersion}/manifest.json`
         : installSource;
@@ -382,6 +392,14 @@ const runMode = async ({ mode, config, options, staticServer, mock, packageKind 
       await page.getByText(notebookName, { exact: true }).first().click();
       await page.waitForTimeout(500);
       await shots.capture('note-list');
+      // Open a note whose body already points at an EdgeEver-hosted image.
+      const shown = withResource.find((detail) => detail.memo.contentMarkdown.includes('/api/v1/resources/'));
+      const card = page.locator(`[data-memo-id="${shown.memo.id}"]`).first();
+      if (await card.count()) {
+        await card.locator('button').first().click();
+        await page.waitForTimeout(1500);
+        await shots.capture('note-detail');
+      }
       console.log('[e2e] real-key assertions passed');
       return { mode, notebook, memos };
     }
